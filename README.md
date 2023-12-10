@@ -1,2 +1,2 @@
-# aoc
-My cool new project!
+# AoC
+My advent of code projects
