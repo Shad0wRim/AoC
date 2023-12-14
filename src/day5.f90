@@ -135,6 +135,7 @@ contains
     subroutine transform_seed_list(mapping, transform)
         type(map), intent(in) :: mapping(:)
         integer(int64), allocatable, intent(inout) :: transform(:)
+        integer(int64) :: nextval
         type(map) :: currmap
         integer :: ol, il, i, counter
         logical :: inrng, iscontained, innone
@@ -168,14 +169,21 @@ contains
         ! in none of the maps
         if (innone) then
             print*, "innone"
-            do i=0,transform(ol+1)-1
-            if (any(mapping(:)%srcstrt .eq. transform(ol) + i)) then
-                transform = [transform, transform(ol) + i, transform(ol+1) - i]
-                transform(ol+1) = i
-                print'(2i5)', transform
-                exit
+            nextval = minval(mapping(:)%srcstrt, mask=mapping(:)%srcstrt .gt. transform(ol))
+            if (nextval - transform(ol) .lt. transform(ol+1)) then
+                transform = [transform, nextval, transform(ol+1) - (nextval - transform(ol))]
+                transform(ol+1) = nextval - transform(ol) 
             end if
-            end do
+
+            ! literally 1000 times slower
+           ! print'(2i5)', transform
+           ! do i=0,transform(ol+1)-1
+           ! if (any(mapping(:)%srcstrt .eq. transform(ol) + i)) then
+           !     transform = [transform, transform(ol) + i, transform(ol+1) - i]
+           !     transform(ol+1) = i
+           !     exit
+           ! end if
+           ! end do
         end if
         ol = ol + 2
         end do

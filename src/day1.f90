@@ -7,7 +7,6 @@ contains
         integer :: error, first_num, last_num, combined_num, total = 0
         integer :: ldx, rdx, lwx, rwx, lwv, rwv
 
-        call chdir('res')
         write(*,*) "input file name"
         read(*, *) filename
         if (trim(filename) .eq. 't') filename = 'test.txt'
