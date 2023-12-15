@@ -54,7 +54,7 @@ contains
     end subroutine
 
     subroutine calc_length(filename, length)
-        character(256), intent(in) :: filename
+        character(8), intent(in) :: filename
         integer, intent(out) :: length
         character(256) :: line
         integer :: error, counter, i, numloc

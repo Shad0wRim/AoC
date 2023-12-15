@@ -252,7 +252,7 @@ contains
     end subroutine
 
     subroutine calc_map_sz(filename, sizes)
-        character(256), intent(in) :: filename
+        character(8), intent(in) :: filename
         integer, intent(out) :: sizes(8)
         character(256) :: line
         integer :: error, ii, jj
