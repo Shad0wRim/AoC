@@ -5,8 +5,9 @@ contains
     subroutine day2
         integer, parameter :: NUM_RED = 12, NUM_GREEN = 13, NUM_BLUE = 14, MAX_GAMES = 15, MAX_COLORS = 3
         integer :: error, id, num, red, green, blue, min_red, min_green, min_blue, sum_ids = 0, power, sum_powers = 0, i, j
-        character(200) :: line, filename, game
+        character(200) :: line, game
         character(5) :: color
+        character(8) :: filename
         character(1) :: skip
         logical :: is_possible
 

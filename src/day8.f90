@@ -9,7 +9,8 @@ submodule(aoc) aoc_day8
 contains
     subroutine day8
         character(270) :: instructions
-        character(16) :: line, filename
+        character(16) :: line
+        character(8) :: filename
         type(node) :: newnode
         type(node), allocatable :: nodes(:)
         integer :: error, numsteps
@@ -95,7 +96,7 @@ contains
         type(node), intent(in) :: nodes(:)
         integer(8), intent(out) :: numsteps
         type(node), allocatable :: currnodes(:)
-        integer, allocatable :: Alocs(:), steps(:,:)
+        integer, allocatable :: Alocs(:), steps(:, :)
         character(3), allocatable :: nextnodes(:)
         integer :: instridx, i, j
         integer(8) :: lcmsteps
@@ -108,47 +109,46 @@ contains
         nodenames = nodes%node
         Alocs = findAlocs(nodenames)
         currnodes = nodes(Alocs)
-        allocate( steps(NUM_ITERS,size(currnodes)), nextnodes(size(currnodes)))
+        allocate (steps(NUM_ITERS, size(currnodes)), nextnodes(size(currnodes)))
         steps = 0
 
         print'(3(a3,x))', currnodes
-        print*
+        print *
 
-        do i=1,size(currnodes, dim=1)
+        do i = 1, size(currnodes, dim=1)
             numsteps = 0
             j = 1
-            do 
-            instridx = mod(numsteps, len_trim(instructions)) + 1
-            currinstr = instructions(instridx:instridx)
+            do
+                instridx = mod(numsteps, len_trim(instructions)) + 1
+                currinstr = instructions(instridx:instridx)
 
-            select case (currinstr)
-            case ('L')
-                nextnodes(i) = currnodes(i)%left
-            case ('R')
-                nextnodes(i) = currnodes(i)%right
-            case default
-                print *, "invalid direction"
-                stop
-            end select
-            
+                select case (currinstr)
+                case ('L')
+                    nextnodes(i) = currnodes(i)%left
+                case ('R')
+                    nextnodes(i) = currnodes(i)%right
+                case default
+                    print *, "invalid direction"
+                    stop
+                end select
 
-            currnodes(i) = nodes(findloc(nodenames, nextnodes(i), dim=1))
+                currnodes(i) = nodes(findloc(nodenames, nextnodes(i), dim=1))
 
-            steps(j,i) = steps(j,i) + 1
-            numsteps = numsteps + 1
-            if (currnodes(i)%node(3:3) == 'Z') j = j + 1
-            if (j > NUM_ITERS) exit
+                steps(j, i) = steps(j, i) + 1
+                numsteps = numsteps + 1
+                if (currnodes(i)%node(3:3) == 'Z') j = j + 1
+                if (j > NUM_ITERS) exit
             end do
         end do
 
-        write(iterformat, '(i1)') NUM_ITERS
+        write (iterformat, '(i1)') NUM_ITERS
         format = '('//iterformat//'(i0,x))'
         print format, steps
-        print*, steps(1,:)
-        hpsteps = steps(1,:)
+        print *, steps(1, :)
+        hpsteps = steps(1, :)
 
         numsteps = lcm_arr(hpsteps)
-        print*, "lcm", numsteps
+        print *, "lcm", numsteps
 
         return
 
@@ -185,10 +185,10 @@ contains
         character(3), intent(in) :: names(:)
         integer, allocatable :: idxs(:)
         integer :: i
-        allocate(idxs(0))
+        allocate (idxs(0))
 
-        do i=1,size(names)
-        if (names(i)(3:3) == 'A') idxs = [idxs, i]
+        do i = 1, size(names)
+            if (names(i) (3:3) == 'A') idxs = [idxs, i]
         end do
 
     end function
@@ -198,8 +198,8 @@ contains
         integer(8) :: lcm_, i
 
         lcm_ = arr(1)
-        do i=2,size(arr)
-        lcm_ = lcm(lcm_, arr(i))
+        do i = 2, size(arr)
+            lcm_ = lcm(lcm_, arr(i))
         end do
     end function
 
@@ -207,7 +207,7 @@ contains
         integer(8), intent(in) :: a, b
         integer(8) :: lcm
 
-        lcm = abs(a*b) / gcd(a, b)
+        lcm = abs(a * b) / gcd(a, b)
     end function
 
     recursive function gcd(a, b) result(gcd_)

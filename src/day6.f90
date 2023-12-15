@@ -2,7 +2,8 @@ submodule(aoc) aoc_day6
     implicit none
 contains
     subroutine day6
-        character(256) :: filename, line
+        character(256) :: line
+        character(8) :: filename
         integer, dimension(:), allocatable :: timedata, distdata, windata
         integer :: error, length, i
         integer(8) :: cattime, catdist, holdtime, dist, win

@@ -25,8 +25,8 @@ program main
         call day7
     case(8)
         call day8
-!    case(9)
-!        call day9
+    case(9)
+        call day9
 !    case(10)
 !        call day10
     case default

@@ -3,7 +3,8 @@ submodule(aoc) aoc_day1
     implicit none
 contains
     subroutine day1
-        character(256) :: line, filename, path
+        character(256) :: line, path
+        character(8) :: filename
         integer :: error, first_num, last_num, combined_num, total = 0
         integer :: ldx, rdx, lwx, rwx, lwv, rwv
 

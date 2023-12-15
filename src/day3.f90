@@ -4,8 +4,9 @@ submodule(aoc) aoc_day3
 contains
     subroutine day3
         character, allocatable :: schematic(:, :)
-        character(256) :: filename, line, prevline, nextline, format
+        character(256) :: line, prevline, nextline, format
         character(3) :: gearline
+        character(8) :: filename
         integer :: numstart, numend, gearloc, totalgear_rat = 0, total = 0
         integer :: num_lines, line_size, addnum, ratio, partnums(20), numadj, i
         logical :: is_valid

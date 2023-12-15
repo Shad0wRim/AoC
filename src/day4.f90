@@ -5,7 +5,8 @@ contains
     subroutine day4
         integer :: error, totpnts = 0, totcards = 0
         integer :: copies(500), pnts, newcopies, i
-        character(256) :: filename, line
+        character(256) :: line
+        character(8) :: filename
 
         copies = 1
         write (*, *) "input file name"

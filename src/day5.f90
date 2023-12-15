@@ -201,7 +201,8 @@ contains
         integer :: sizes(8)
 
         type(map), dimension(:), pointer :: currarray
-        character(256) :: filename, line
+        character(256) :: line
+        character(8) :: filename
         integer :: error, i, counter
 
         write (*, *) "input file name"

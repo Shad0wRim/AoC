@@ -10,7 +10,8 @@ contains
     subroutine day7
         type(hand), allocatable :: hands(:)
         integer, allocatable :: bids(:)
-        character(256) :: filename, line
+        character(256) :: line
+        character(8) :: filename
         integer :: error, i
         type(hand) :: temphand
         integer :: tempbid, totalwinnings = 0, totalwinnings_j = 0
