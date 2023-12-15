@@ -23,8 +23,8 @@ program main
         call day6
     case(7)
         call day7
-!    case(8)
-!        call day8
+    case(8)
+        call day8
 !    case(9)
 !        call day9
 !    case(10)
