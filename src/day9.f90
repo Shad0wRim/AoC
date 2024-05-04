@@ -47,11 +47,13 @@ contains
         integer :: difflist(size(arr)-1)
 
         difflist = diff(arr)
+        print*, difflist
         if (all(difflist == 0)) then
             prev = arr(1)
         else
             prev = arr(1) - calc_prev(difflist)
         end if
+
     end function
 
     recursive function calc_next(arr) result(next)

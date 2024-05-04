@@ -191,6 +191,7 @@ contains
         write (*, '(a,i0)') "total: ", total
         write (*, '(a,i0)') "total gear ratios: ", totalgear_rat
     end subroutine
+
     subroutine print_schematic(array)
         character, intent(in) :: array(:, :)
         character(10) :: format, arrszstr
