@@ -5,7 +5,7 @@ const INTERACTIVE: bool = false;
 const DAY: i32 = 1;
 
 fn main() {
-    println!("Advent of Code 2024\n");
+    println!("Advent of Code 2024");
 
     let day = if INTERACTIVE {
         use std::io;
