@@ -2,7 +2,7 @@ mod days;
 use days::*;
 
 const INTERACTIVE: bool = false;
-const DAY: i32 = 1;
+const DAY: i32 = 2;
 
 fn main() {
     println!("Advent of Code 2024");
