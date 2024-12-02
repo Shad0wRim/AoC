@@ -7,7 +7,7 @@ submodule(aoc) aoc_day5
    end type
 contains
    subroutine day5
-      type(map), dimension(:), allocatable :: seedtosoil, soiltofert, ferttowat, wattolight, lighttotemp, temptohum, humtoloc
+ type(map), dimension(:), allocatable :: seedtosoil, soiltofert, ferttowat, wattolight, lighttotemp, temptohum, humtoloc
       integer(int64), dimension(:), allocatable :: seeds, transform
       type(map) :: test_map(2)
       integer(int64), allocatable :: test_list(:)
@@ -157,7 +157,7 @@ contains
                else
                   transform(ol + 1) = currmap%rnglen - (transform(ol) - currmap%srcstrt)
                   if (currmap%rnglen - transform(ol + 1) + 1 .gt. &
-                      0) transform = [transform, transform(ol) + transform(ol + 1), currmap%rnglen - transform(ol + 1) + 1]
+                   0) transform = [transform, transform(ol) + transform(ol + 1), currmap%rnglen - transform(ol + 1) + 1]
                   print'(2i5)', transform
                end if
                transform(ol) = currmap%deststrt + transform(ol) - currmap%srcstrt

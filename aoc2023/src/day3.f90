@@ -101,8 +101,8 @@ contains
                numstart = verify(prevline(:gearloc - 1), '0123456789', back=.true.) + 1
                read (prevline(numstart:numend), *) partnums(numadj)
             end if
-            if (scan(gearline, '0123456789') .eq. 1 .and &
-                . scan(gearline, '0123456789', back=.true.) .eq. 2) then
+            if (scan(gearline, '0123456789') .eq. 1 .and. &
+                scan(gearline, '0123456789', back=.true.) .eq. 2) then
                numadj = numadj + 1
                numend = gearloc
                numstart = verify(prevline(:gearloc), '0123456789', back=.true.) + 1
@@ -120,9 +120,9 @@ contains
                numend = verify(prevline(numstart:), '0123456789') + numstart - 2
                read (prevline(numstart:numend), *) partnums(numadj)
             end if
-            if (scan(gearline, '0123456789') .eq. 1 .and &
-                . scan(gearline, '0123456789', back=.true.) .eq. 3 .a &
-                nd. scan(gearline(2:2), '0123456789') .eq. 0) then
+            if (scan(gearline, '0123456789') .eq. 1 .and. &
+                scan(gearline, '0123456789', back=.true.) .eq. 3 .and. &
+                scan(gearline(2:2), '0123456789') .eq. 0) then
                numadj = numadj + 2
                numstart = gearloc + 1
                numend = verify(prevline(numstart:), '0123456789') + numstart - 2
@@ -145,8 +145,8 @@ contains
                numstart = verify(nextline(:gearloc - 1), '0123456789', back=.true.) + 1
                read (nextline(numstart:numend), *) partnums(numadj)
             end if
-            if (scan(gearline, '0123456789') .eq. 1 .and &
-                . scan(gearline, '0123456789', back=.true.) .eq. 2) then
+            if (scan(gearline, '0123456789') .eq. 1 .and. &
+                scan(gearline, '0123456789', back=.true.) .eq. 2) then
                numadj = numadj + 1
                numend = gearloc
                numstart = verify(nextline(:gearloc), '0123456789', back=.true.) + 1
@@ -164,9 +164,9 @@ contains
                numend = verify(nextline(numstart:), '0123456789') + numstart - 2
                read (nextline(numstart:numend), *) partnums(numadj)
             end if
-            if (scan(gearline, '0123456789') .eq. 1 .and &
-                . scan(gearline, '0123456789', back=.true.) .eq. 3 .a &
-                nd. scan(gearline(2:2), '0123456789') .eq. 0) then
+            if (scan(gearline, '0123456789') .eq. 1 .and. &
+                scan(gearline, '0123456789', back=.true.) .eq. 3 .and. &
+                scan(gearline(2:2), '0123456789') .eq. 0) then
                numadj = numadj + 2
                numstart = gearloc + 1
                numend = verify(nextline(numstart:), '0123456789') + numstart - 2
