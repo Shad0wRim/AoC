@@ -1,7 +1,6 @@
 use std::{collections::HashMap, fs};
 
 pub fn day1() {
-    println!("Day 1:");
     print!("Part 1: ");
     let data = fs::read_to_string("res/day01.txt").unwrap();
 

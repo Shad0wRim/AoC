@@ -2,7 +2,7 @@ mod days;
 use days::*;
 
 const INTERACTIVE: bool = false;
-const DAY: i32 = 2;
+const DAY: i32 = 3;
 
 fn main() {
     println!("Advent of Code 2024");
@@ -17,6 +17,7 @@ fn main() {
         DAY
     };
 
+    println!("Day {day}:");
     match day {
         1 => day1(),
         2 => day2(),

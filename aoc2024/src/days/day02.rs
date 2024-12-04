@@ -1,7 +1,6 @@
 use std::fs;
 
 pub fn day2() {
-    println!("Day 2:");
     let data = fs::read_to_string("res/day02.txt").unwrap();
 
     print!("Part 1: ");
