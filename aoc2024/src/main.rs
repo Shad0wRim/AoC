@@ -2,16 +2,15 @@ mod days;
 use days::*;
 
 const INTERACTIVE: bool = false;
-const DAY: i32 = 4;
+const DAY: i32 = 5;
 
 fn main() {
     println!("Advent of Code 2024");
 
     let day = if INTERACTIVE {
-        use std::io;
         let mut buf = String::new();
         print!("Input day to run: ");
-        io::stdin().read_line(&mut buf).unwrap();
+        std::io::stdin().read_line(&mut buf).unwrap();
         buf.trim_end().parse().unwrap_or(DAY)
     } else {
         DAY
