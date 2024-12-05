@@ -73,7 +73,7 @@ fn match_str(scanner: &mut Scanner, str: &str) -> bool {
     for _ in 0..str.len() {
         scanner.pop();
     }
-    return true;
+    true
 }
 
 fn match_num(scanner: &mut Scanner) -> Option<u32> {
@@ -159,7 +159,7 @@ impl Scanner {
                 self.pop();
             }
         }
-        return false;
+        false
     }
 
     fn take_until(&mut self, target: &char) -> bool {
@@ -170,6 +170,6 @@ impl Scanner {
                 self.pop();
             }
         }
-        return false;
+        false
     }
 }
