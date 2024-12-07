@@ -1,5 +1,3 @@
-use std::{isize, usize};
-
 #[allow(dead_code)]
 const PRACTICE_DATA: &str = "....#.....
 .........#
@@ -98,7 +96,7 @@ fn check_all_locs(array: &mut Array) -> usize {
 }
 
 fn run_until_loop_or_exit(array: &mut Array) -> Result<bool, ()> {
-    let Some(((mut r, mut c), mut face)) = find_guard(&array) else {
+    let Some(((mut r, mut c), mut face)) = find_guard(array) else {
         return Err(());
     };
     loop {
