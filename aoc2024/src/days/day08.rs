@@ -65,8 +65,8 @@ pub fn day8() {
                 .for_each(|node| node_locs2.push(node));
         }
     }
-    let count1 = node_locs1.into_iter().unique().collect::<Vec<_>>().len();
-    let count2 = node_locs2.into_iter().unique().collect::<Vec<_>>().len();
+    let count1 = node_locs1.into_iter().unique().count();
+    let count2 = node_locs2.into_iter().unique().count();
     println!("Part 1: {count1}");
     println!("Part 2: {count2}");
 }
