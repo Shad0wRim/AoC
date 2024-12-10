@@ -1,26 +1,23 @@
-pub fn day5() {
-    let data = std::fs::read_to_string("res/day05.txt").unwrap();
-
+pub fn day5(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let mut rules: Vec<OrderingRule> = vec![];
     let mut lines = data.lines();
     while let Some(rule) = lines.next().and_then(|line| line.parse().ok()) {
         rules.push(rule);
     }
 
-    let mut total_1 = 0;
-    let mut total_2 = 0;
+    let mut part1 = 0;
+    let mut part2 = 0;
     for line in lines {
         let mut page_nums: Vec<u32> = line.split(',').map(|n| n.parse().unwrap()).collect();
         if validate(&page_nums, &rules) {
-            total_1 += page_nums[page_nums.len() / 2];
+            part1 += page_nums[page_nums.len() / 2];
         } else {
             reorder(&mut page_nums, &rules);
-            total_2 += page_nums[page_nums.len() / 2];
+            part2 += page_nums[page_nums.len() / 2];
         }
     }
 
-    println!("Part 1: {total_1}");
-    println!("Part 2: {total_2}");
+    (Box::new(part1), Box::new(part2))
 }
 
 fn validate(nums: &[u32], rules: &[OrderingRule]) -> bool {

@@ -1,10 +1,9 @@
 #[allow(dead_code)]
 const TEST_DATA: &str = "2333133121414131402";
 
-pub fn day9() {
-    let data: Vec<_> = std::fs::read("res/day09.txt")
-        .unwrap()
-        .into_iter()
+pub fn day9(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
+    let data: Vec<_> = data
+        .bytes()
         .map(|b| (b.wrapping_sub(b'0')))
         .filter(|b| (0..=9).contains(b))
         .collect();
@@ -22,7 +21,7 @@ pub fn day9() {
         }
     }
 
-    let checksum = {
+    let part1 = {
         let mut disk = disk.clone();
         let mut end_idx = disk.len() - 1;
         for i in 0..disk.len() {
@@ -43,9 +42,8 @@ pub fn day9() {
             .map(|(i, id)| i * id)
             .sum::<usize>()
     };
-    println!("Part 1: {checksum}");
 
-    let checksum = {
+    let part2 = {
         let mut skip_idxs = vec![];
         for chunk_end in (0..disk.len()).rev() {
             if skip_idxs.contains(&chunk_end) {
@@ -97,5 +95,5 @@ pub fn day9() {
             .sum::<usize>()
     };
 
-    println!("Part 2: {checksum}");
+    (Box::new(part1), Box::new(part2))
 }

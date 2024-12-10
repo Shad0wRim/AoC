@@ -1,5 +1,4 @@
-pub fn day4() {
-    let data = std::fs::read_to_string("res/day04.txt").unwrap();
+pub fn day4(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let arr: CharArr = data
         .lines()
         .map(str::chars)
@@ -7,12 +6,10 @@ pub fn day4() {
         .collect();
     let mut searcher = Searcher { r: 0, c: 0, arr };
 
-    print!("Part 1: ");
-
-    let mut total = 0;
+    let mut part1 = 0;
     loop {
         loop {
-            total += check_xmas(&searcher);
+            part1 += check_xmas(&searcher);
             if !searcher.move_next_col() {
                 break;
             }
@@ -21,14 +18,12 @@ pub fn day4() {
             break;
         }
     }
-    println!("{total}");
 
-    print!("Part 2: ");
+    let mut part2 = 0;
     searcher.reset();
-    total = 0;
     loop {
         loop {
-            total += check_mas(&searcher) as u32;
+            part2 += check_mas(&searcher) as u32;
             if !searcher.move_next_col() {
                 break;
             }
@@ -37,7 +32,8 @@ pub fn day4() {
             break;
         }
     }
-    println!("{total}");
+
+    (Box::new(part1), Box::new(part2))
 }
 
 fn check_mas(searcher: &Searcher) -> bool {

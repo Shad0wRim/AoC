@@ -1,21 +1,14 @@
-use std::fs;
-
-pub fn day2() {
-    let data = fs::read_to_string("res/day02.txt").unwrap();
-
-    print!("Part 1: ");
-    let mut num_safe = 0;
+pub fn day2(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
+    let mut part1 = 0;
     for line in data.lines() {
         let nums: Vec<i32> = line.split(' ').filter_map(|x| x.parse().ok()).collect();
 
         if validate_report(nums) {
-            num_safe += 1;
+            part1 += 1;
         }
     }
-    println!("{num_safe}");
 
-    print!("Part 2: ");
-    num_safe = 0;
+    let mut part2 = 0;
     for line in data.lines() {
         let nums: Vec<i32> = line.split(' ').filter_map(|x| x.parse().ok()).collect();
 
@@ -29,10 +22,11 @@ pub fn day2() {
             }
         }
         if is_safe {
-            num_safe += 1;
+            part2 += 1;
         }
     }
-    println!("{num_safe}");
+
+    (Box::new(part1), Box::new(part2))
 }
 
 fn validate_report(report: Vec<i32>) -> bool {

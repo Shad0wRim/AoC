@@ -10,24 +10,22 @@ const PRACTICE_DATA: &str = "....#.....
 #.........
 ......#...";
 
-pub fn day6() {
-    let data = std::fs::read_to_string("res/day06.txt").unwrap();
-
+pub fn day6(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let mut array = fill_array(&data);
     let Ok(_res) = run_until_loop_or_exit(&mut array) else {
-        return;
+        panic!();
     };
-    let count = array.iter().fold(0, |count, line| {
+    let part1 = array.iter().fold(0, |count, line| {
         count
             + line.iter().fold(0, |count, tile| {
                 count + matches!(tile, Tile::Visited) as usize
             })
     });
-    println!("Part 1: {count}");
 
     let mut array = fill_array(&data);
-    let count = check_all_locs(&mut array);
-    println!("Part 2: {count}");
+    let part2 = check_all_locs(&mut array);
+
+    (Box::new(part1), Box::new(part2))
 }
 
 fn make_move(

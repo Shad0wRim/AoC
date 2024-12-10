@@ -1,9 +1,4 @@
-use std::{collections::HashMap, fs};
-
-pub fn day1() {
-    print!("Part 1: ");
-    let data = fs::read_to_string("res/day01.txt").unwrap();
-
+pub fn day1(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let mut left_data = vec![];
     let mut right_data = vec![];
     for str in data.lines() {
@@ -23,11 +18,9 @@ pub fn day1() {
     sorted_right.sort_unstable();
 
     let data = sorted_left.iter().zip(sorted_right.iter());
-    let res: i32 = data.map(|(l, r)| (l - r).abs()).sum();
-    println!("{res}");
+    let part1: i32 = data.map(|(l, r)| (l - r).abs()).sum();
 
-    print!("Part 2: ");
-    let mut counts = HashMap::new();
+    let mut counts = std::collections::HashMap::new();
     for num in right_data {
         if let Some(x) = counts.get_mut(&num) {
             *x += 1;
@@ -35,10 +28,10 @@ pub fn day1() {
             counts.insert(num, 1);
         }
     }
-    let res: i32 = left_data
+    let part2: i32 = left_data
         .iter()
         .map(|l| l * counts.get(l).unwrap_or(&0))
         .sum();
 
-    println!("{res}\n");
+    (Box::new(part1), Box::new(part2))
 }

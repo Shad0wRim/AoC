@@ -9,8 +9,7 @@ const PRACTICE_DATA: &str = "190: 10 19
 21037: 9 7 18 13
 292: 11 6 16 20";
 
-pub fn day7() {
-    let data = std::fs::read_to_string("res/day07.txt").unwrap();
+pub fn day7(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let mut equations = std::collections::HashMap::new();
     for line in data.lines() {
         let Some((left, right)) = line.split_once(": ") else {
@@ -21,18 +20,18 @@ pub fn day7() {
         equations.insert(total, vals);
     }
 
-    let mut total1 = 0;
-    let mut total2 = 0;
+    let mut part1 = 0;
+    let mut part2 = 0;
     for (k, v) in &equations {
         if try_ops(*k, v) {
-            total1 += *k;
+            part1 += *k;
         }
         if try_ops_with_concat(*k, v) {
-            total2 += *k;
+            part2 += *k;
         }
     }
-    println!("Part 1: {total1}");
-    println!("Part 2: {total2}");
+
+    (Box::new(part1), Box::new(part2))
 }
 
 fn try_ops(target: u64, values: &[u64]) -> bool {

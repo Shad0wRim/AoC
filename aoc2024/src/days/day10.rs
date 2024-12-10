@@ -8,9 +8,9 @@ const PRACTICE_DATA: &[u8] = b"89010123
 01329801
 10456732";
 
-pub fn day10() {
-    let data = std::fs::read("res/day10.txt")
-        .unwrap()
+pub fn day10(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
+    let data = data
+        .as_bytes()
         .split(|&b| b == b'\n')
         .map(|line| line.iter().map(|&b| b - b'0').collect::<Vec<_>>())
         .filter(|line| !line.is_empty())
@@ -36,8 +36,7 @@ pub fn day10() {
         .map(|start| traverse_trail_rating(start, &slopes))
         .sum::<usize>();
 
-    println!("Part 1: {scores}");
-    println!("Part 2: {ratings}");
+    (Box::new(scores), Box::new(ratings))
 }
 
 use itertools::Itertools;

@@ -1,22 +1,17 @@
-pub fn day3() {
-    let data = std::fs::read_to_string("res/day03.txt").unwrap();
+pub fn day3(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let mut scanner = Scanner::new(&data);
 
-    print!("Part 1: ");
-
-    let mut total = 0;
+    let mut part1 = 0;
     while !scanner.is_done() {
         scanner.take_until(&'m');
         if let Some(n) = match_mul(&mut scanner) {
-            total += n;
+            part1 += n;
         } else {
             scanner.pop();
         }
     }
-    println!("{total}");
 
-    print!("Part 2: ");
-    total = 0;
+    let mut part2 = 0;
     scanner.reset();
     let mut active = true;
     while !scanner.is_done() {
@@ -28,7 +23,7 @@ pub fn day3() {
             }
 
             if let Some(n) = match_mul(&mut scanner) {
-                total += n;
+                part2 += n;
             } else {
                 scanner.pop();
             }
@@ -42,7 +37,8 @@ pub fn day3() {
             }
         }
     }
-    println!("{total}");
+
+    (Box::new(part1), Box::new(part2))
 }
 
 fn match_mul(scanner: &mut Scanner) -> Option<u32> {

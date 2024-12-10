@@ -14,8 +14,7 @@ const PRACTICE_DATA: &str = "............
 ............
 ............";
 
-pub fn day8() {
-    let data = std::fs::read_to_string("res/day08.txt").unwrap();
+pub fn day8(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     //let data = PRACTICE_DATA;
     let array: Array = data.lines().map(|line| line.chars().collect()).collect();
     let (rows, cols) = (array.len() as isize, array[0].len() as isize);
@@ -65,10 +64,10 @@ pub fn day8() {
                 .for_each(|node| node_locs2.push(node));
         }
     }
-    let count1 = node_locs1.into_iter().unique().count();
-    let count2 = node_locs2.into_iter().unique().count();
-    println!("Part 1: {count1}");
-    println!("Part 2: {count2}");
+    let part1 = node_locs1.into_iter().unique().count();
+    let part2 = node_locs2.into_iter().unique().count();
+
+    (Box::new(part1), Box::new(part2))
 }
 
 type Array = Vec<Vec<char>>;
