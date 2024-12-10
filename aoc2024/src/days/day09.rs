@@ -56,7 +56,7 @@ pub fn day9() {
             };
 
             let mut chunk_start = chunk_end;
-            while chunk_start as isize - 1 >= 0 && disk[chunk_start - 1] == Some(id) {
+            while chunk_start as isize > 0 && disk[chunk_start - 1] == Some(id) {
                 chunk_start -= 1;
             }
             let chunk_len = chunk_end - chunk_start + 1;
@@ -70,7 +70,7 @@ pub fn day9() {
                 }
 
                 let mut free_end = free_start;
-                while disk[free_end + 1] == None {
+                while disk[free_end + 1].is_none() {
                     free_end += 1;
                 }
                 if free_start >= chunk_start {
