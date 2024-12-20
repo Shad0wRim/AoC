@@ -1,13 +1,3 @@
-#[allow(dead_code)]
-const PRACTICE_DATA: &[u8] = b"89010123
-78121874
-87430965
-96549874
-45678903
-32019012
-01329801
-10456732";
-
 pub fn day10(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let data = data
         .as_bytes()
@@ -15,11 +5,6 @@ pub fn day10(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Dis
         .map(|line| line.iter().map(|&b| b - b'0').collect::<Vec<_>>())
         .filter(|line| !line.is_empty())
         .collect::<Vec<_>>();
-    //let data = PRACTICE_DATA
-    //    .split(|&b| b == b'\n')
-    //    .map(|line| line.iter().map(|&b| b - b'0').collect::<Vec<_>>())
-    //    .filter(|line| !line.is_empty())
-    //    .collect::<Vec<_>>();
 
     let slopes = transform_data(data);
 
@@ -39,36 +24,37 @@ pub fn day10(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Dis
     (Box::new(scores), Box::new(ratings))
 }
 
-use itertools::Itertools;
-
-#[rustfmt::skip]
 fn traverse_trail_scores(start: &Trail, data: &Vec<Vec<Trail>>) -> usize {
-    fn traverse_trail_rec<'a>(start: &'a Trail, data: &'a Vec<Vec<Trail>>) -> Vec<&'a Trail> {
-        if start.height == 9 { return vec![start]; }
+    use std::collections::HashSet;
+    fn traverse_trail_rec<'a>(start: &'a Trail, data: &'a Vec<Vec<Trail>>) -> HashSet<&'a Trail> {
+        if start.height == 9 {
+            return HashSet::from([start]);
+        }
 
         let mut dirs = [None; 4];
-        if start.north == Some(1) { dirs[0] = Some(&data[start.row - 1][start.col]) }
-        if start.south == Some(1) { dirs[1] = Some(&data[start.row + 1][start.col]) }
-        if start.east == Some(1)  { dirs[2] = Some(&data[start.row][start.col + 1]) }
-        if start.west == Some(1)  { dirs[3] = Some(&data[start.row][start.col - 1]) }
+        (start.north == Some(1)).then(|| dirs[0] = Some(&data[start.row - 1][start.col]));
+        (start.south == Some(1)).then(|| dirs[1] = Some(&data[start.row + 1][start.col]));
+        (start.east == Some(1)).then(|| dirs[2] = Some(&data[start.row][start.col + 1]));
+        (start.west == Some(1)).then(|| dirs[3] = Some(&data[start.row][start.col - 1]));
 
         dirs.into_iter()
             .flatten()
             .flat_map(|s| traverse_trail_rec(s, data))
             .collect()
     }
-    traverse_trail_rec(start, data).into_iter().unique().count()
+    traverse_trail_rec(start, data).len()
 }
 
-#[rustfmt::skip]
 fn traverse_trail_rating(start: &Trail, data: &Vec<Vec<Trail>>) -> usize {
-    if start.height == 9 { return 1; }
+    if start.height == 9 {
+        return 1;
+    }
 
     let mut dirs = [None; 4];
-    if start.north == Some(1) { dirs[0] = Some(&data[start.row - 1][start.col]) }
-    if start.south == Some(1) { dirs[1] = Some(&data[start.row + 1][start.col]) }
-    if start.east == Some(1) { dirs[2] = Some(&data[start.row][start.col + 1]) }
-    if start.west == Some(1) { dirs[3] = Some(&data[start.row][start.col - 1]) }
+    (start.north == Some(1)).then(|| dirs[0] = Some(&data[start.row - 1][start.col]));
+    (start.south == Some(1)).then(|| dirs[1] = Some(&data[start.row + 1][start.col]));
+    (start.east == Some(1)).then(|| dirs[2] = Some(&data[start.row][start.col + 1]));
+    (start.west == Some(1)).then(|| dirs[3] = Some(&data[start.row][start.col - 1]));
 
     dirs.into_iter()
         .flatten()
@@ -103,13 +89,13 @@ fn transform_data(data: Vec<Vec<u8>>) -> Vec<Vec<Trail>> {
                 .and_then(|l| l.get(c.wrapping_sub(1)))
                 .map(|&v| v as i32 - val as i32),
         })
+        .collect::<Vec<_>>()
         .chunks(cols)
-        .into_iter()
-        .map(|line| line.into_iter().collect::<Vec<_>>())
+        .map(|line| line.to_vec())
         .collect::<Vec<_>>()
 }
 
-#[derive(Eq, PartialEq, Hash)]
+#[derive(Eq, PartialEq, Hash, Clone)]
 struct Trail {
     row: usize,
     col: usize,
@@ -119,3 +105,12 @@ struct Trail {
     east: Option<i32>,
     west: Option<i32>,
 }
+
+const _DATA: &str = "89010123
+78121874
+87430965
+96549874
+45678903
+32019012
+01329801
+10456732";

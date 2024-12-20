@@ -20,36 +20,6 @@ pub fn day14(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Dis
     (Box::new(part1), Box::new(part2))
 }
 
-struct BotData {
-    p: (i32, i32),
-    v: (i32, i32),
-}
-
-fn found_tree(bots: &[BotData]) -> bool {
-    use itertools::Itertools;
-    let counts = bots.iter().counts_by(|bot| bot.p);
-    counts.values().all(|x| *x == 1) // assumption that no bots are overlapping in the easter egg
-}
-
-fn print(bots: &[BotData], size: (i32, i32)) {
-    use itertools::Itertools;
-    let counts = bots.iter().counts_by(|bot| bot.p);
-
-    for loc in (0..size.1).cartesian_product(0..size.0) {
-        let loc = (loc.1, loc.0);
-
-        if let Some(bot) = counts.get(&loc) {
-            print!("{bot}");
-        } else {
-            print!(".");
-        }
-
-        if loc.0 == size.0 - 1 {
-            println!()
-        }
-    }
-}
-
 fn simulate_bots(bots: &mut [BotData], size: (i32, i32), time: i32) {
     for bot in bots {
         bot.p.0 += bot.v.0 * time;
@@ -81,6 +51,43 @@ fn count_quadrants(bots: &[BotData], size: (i32, i32)) -> i32 {
         .product()
 }
 
+fn found_tree(bots: &[BotData]) -> bool {
+    let counts = counts_by(bots, |bot| bot.p);
+    counts.values().all(|x| *x == 1) // assumption that no bots are overlapping in the easter egg
+}
+
+fn counts_by<T, K, F>(collection: T, f: F) -> HashMap<K, usize>
+where
+    T: IntoIterator,
+    K: Eq + Hash,
+    F: FnMut(T::Item) -> K,
+{
+    let mut hashmap = HashMap::new();
+    for key in collection.into_iter().map(f) {
+        hashmap.entry(key).and_modify(|e| *e += 1).or_insert(1);
+    }
+
+    hashmap
+}
+
+fn print(bots: &[BotData], size: (i32, i32)) {
+    let counts = counts_by(bots, |bot| bot.p);
+
+    for loc in (0..size.1).flat_map(|x| (0..size.0).map(move |y| (x, y))) {
+        let loc = (loc.1, loc.0);
+
+        if let Some(bot) = counts.get(&loc) {
+            print!("{bot}");
+        } else {
+            print!(".");
+        }
+
+        if loc.0 == size.0 - 1 {
+            println!()
+        }
+    }
+}
+
 fn parse_data(data: &str) -> Vec<BotData> {
     data.lines()
         .map(|line| {
@@ -96,8 +103,14 @@ fn parse_data(data: &str) -> Vec<BotData> {
         .collect()
 }
 
-#[allow(dead_code)]
-const PRACTICE_DATA: &str = "p=0,4 v=3,-3
+use std::{collections::HashMap, hash::Hash};
+
+struct BotData {
+    p: (i32, i32),
+    v: (i32, i32),
+}
+
+const _DATA: &str = "p=0,4 v=3,-3
 p=6,3 v=-1,-3
 p=10,3 v=-1,2
 p=2,0 v=2,-1
@@ -109,7 +122,6 @@ p=9,3 v=2,3
 p=7,3 v=-1,2
 p=2,4 v=2,-3
 p=9,5 v=-3,-3";
-#[allow(dead_code)]
-const PRACTICE_SIZE: (i32, i32) = (11, 7);
+const _SIZE: (i32, i32) = (11, 7);
 
 const SIZE: (i32, i32) = (101, 103);
