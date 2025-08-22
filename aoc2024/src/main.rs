@@ -1,8 +1,8 @@
 mod days;
-use days::*;
+use days::DAY_FUNCS;
 
 const INTERACTIVE: bool = false;
-const DAY: u32 = 21;
+const DAY: usize = 21;
 
 fn main() {
     println!("Advent of Code 2024");
@@ -24,40 +24,13 @@ fn main() {
     }
     let data = std::fs::read_to_string(&data_path).unwrap();
 
-    let (part1, part2) = match day {
-        1 => day1(data),
-        2 => day2(data),
-        3 => day3(data),
-        4 => day4(data),
-        5 => day5(data),
-        6 => day6(data),
-        7 => day7(data),
-        8 => day8(data),
-        9 => day9(data),
-        10 => day10(data),
-        11 => day11(data),
-        12 => day12(data),
-        13 => day13(data),
-        14 => day14(data),
-        15 => day15(data),
-        16 => day16(data),
-        17 => day17(data),
-        18 => day18(data),
-        19 => day19(data),
-        20 => day20(data),
-        21 => day21(data),
-        22 => day22(data),
-        23 => day23(data),
-        24 => day24(data),
-        25 => day25(data),
-        _ => panic!(),
-    };
+    let (part1, part2) = DAY_FUNCS[DAY](data);
     println!("Day {day}:");
     println!("Part 1: {part1}");
     println!("Part 2: {part2}");
 }
 
-fn get_aoc_input(day: u32) -> Result<String, &'static str> {
+fn get_aoc_input(day: usize) -> Result<String, &'static str> {
     use reqwest::{
         blocking::Client,
         header::{HeaderMap, HeaderValue, CONTENT_TYPE, COOKIE},
