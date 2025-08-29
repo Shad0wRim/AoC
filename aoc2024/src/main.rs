@@ -24,7 +24,7 @@ fn main() {
     }
     let data = std::fs::read_to_string(&data_path).unwrap();
 
-    let (part1, part2) = DAY_FUNCS[DAY](data);
+    let (part1, part2) = DAY_FUNCS[DAY - 1](data);
     println!("Day {day}:");
     println!("Part 1: {part1}");
     println!("Part 2: {part2}");
