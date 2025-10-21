@@ -33,7 +33,7 @@ function main()
     end
 end
 
-using HTTP
+using Downloads
 function get_aoc_data(day::Int)
     cookie = ENV["AOC_TOKEN"]
     header = [
@@ -41,13 +41,9 @@ function get_aoc_data(day::Int)
         "cookie" => "session=$cookie",
     ]
     url = "https://adventofcode.com/2025/day/$day/input"
-    response = try
-        response = HTTP.get(url, header)
-        String(response.body)
-    catch e
-        @show e
-    end
-    return response
+    buf = IOBuffer(; write=true)
+    request(url; output=buf, headers=header)
+    String(take!(buf))
 end
 
 main()
