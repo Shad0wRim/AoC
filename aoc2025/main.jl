@@ -1,49 +1,28 @@
+#!/usr/bin/env julia
+
 include("days.jl")
+include("utils.jl")
 using .aoc_days: aoc_day
+using .utils
+
+const DAY = 1
 
 function main()
-    currday = 1
-    datapath = "res/day$(lpad(currday,2,"0")).txt"
-    if !isfile(datapath) || stat(datapath).size == 0
+    local day
+    try
+        day = parse(Int, first(ARGS))
+    catch
+        day = DAY
+    end
+
+    # download file if it is not in the res directory
+    if !isfile(datapath(day))
         println("fetching puzzle data")
-        data = get_aoc_data(currday)
-        if typeof(data) <: Exception
-            println("Could not fetch data")
-            return
-        else
-            write(datapath, data)
-        end
+        get_aoc_data(day)
     end
 
-    data = read(datapath, String)
-    answers = currday <= length(aoc_day) ?
-              aoc_day[currday](data) :
-              println("day is unimplemented")
-
-    if isnothing(answers)
-        println("day is unimplemented")
-    elseif typeof(answers) <: Tuple || typeof(answers) <: Vector
-        part1, part2 = answers
-        println("Day $currday:")
-        println("Part 1: $part1")
-        println("Part 2: $part2")
-    else
-        println("Day $currday:")
-        println("Part 1: $answers")
-    end
-end
-
-using Downloads
-function get_aoc_data(day::Int)
-    cookie = ENV["AOC_TOKEN"]
-    header = [
-        "Content-Type" => "text/plain",
-        "cookie" => "session=$cookie",
-    ]
-    url = "https://adventofcode.com/2025/day/$day/input"
-    buf = IOBuffer(; write=true)
-    request(url; output=buf, headers=header)
-    String(take!(buf))
+    # run the corresponding day
+    runday(day)
 end
 
 main()
