@@ -4,7 +4,7 @@ export get_aoc_data, datapath, runday
 
 using Downloads: download
 function get_aoc_data(day::Int)
-    cookie = read(expanduser("~/.aoc-cookie"), String)
+    cookie = read("../.aoc-cookie", String)
     download("https://adventofcode.com/2025/day/$day/input", datapath(day);
         headers=[
             "Content-Type" => "text/plain",
