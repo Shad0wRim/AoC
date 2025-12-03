@@ -5,15 +5,8 @@ include("utils.jl")
 using .aoc_days: aoc_day
 using .utils
 
-const DAY = 1
-
 function main()
-    local day
-    try
-        day = parse(Int, first(ARGS))
-    catch
-        day = DAY
-    end
+    day = parse(Int, first(ARGS))
 
     # download file if it is not in the res directory
     if !isfile(datapath(day))
