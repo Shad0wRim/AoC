@@ -11,7 +11,6 @@ function day03(data::String)
         joltage1 += maxjolt1
 
         # part2
-        maxjolt2 = 0
         dig = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
         dig[1], idx1 = findmax(line[begin:end-11])
         dig[2], idx2 = findmax(line[idx1+1:end-10])
@@ -36,7 +35,6 @@ function day03(data::String)
         idx11 += idx10
         dig[12], idx12 = findmax(line[idx11+1:end])
         idx12 += idx11
-
 
         joltage2 += parse(Int, join(dig))
     end
