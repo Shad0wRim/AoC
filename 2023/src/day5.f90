@@ -230,13 +230,13 @@ contains
             if (scan(line, ':') .ne. 0) then
                counter = 1
                if (index(line, 'seeds:') .ne. 0) read (line(7:), *) seeds
-               if (index(line, 'seed-to-soil') .ne. 0) currarray = .gt. seedtosoil
-               if (index(line, 'soil-to-fert') .ne. 0) currarray = .gt. soiltofert
-               if (index(line, 'fertilizer-t') .ne. 0) currarray = .gt. ferttowat
-               if (index(line, 'water-to-lig') .ne. 0) currarray = .gt. wattolight
-               if (index(line, 'light-to-tem') .ne. 0) currarray = .gt. lighttotemp
-               if (index(line, 'temperature-') .ne. 0) currarray = .gt. temptohum
-               if (index(line, 'humidity-to-') .ne. 0) currarray = .gt. humtoloc
+               if (index(line, 'seed-to-soil') .ne. 0) currarray => seedtosoil
+               if (index(line, 'soil-to-fert') .ne. 0) currarray => soiltofert
+               if (index(line, 'fertilizer-t') .ne. 0) currarray => ferttowat
+               if (index(line, 'water-to-lig') .ne. 0) currarray => wattolight
+               if (index(line, 'light-to-tem') .ne. 0) currarray => lighttotemp
+               if (index(line, 'temperature-') .ne. 0) currarray => temptohum
+               if (index(line, 'humidity-to-') .ne. 0) currarray => humtoloc
             else if (scan(line, '1234567890') .ne. 0) then
                read (line, *) currarray(counter)
                counter = counter + 1
