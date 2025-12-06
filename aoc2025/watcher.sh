@@ -4,7 +4,7 @@ DAY=$1
 PRACTICE=$2
 
 [[ -z $DAY ]] && exit 1
-[[ -z $PRACTICE ]] && PRACTICE=0 || PRACTICE=practice
+[[ -z $PRACTICE ]] && PRACTICE=practice || PRACTICE=
 
 while true; do
     sleep 0.1
