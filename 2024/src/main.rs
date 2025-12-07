@@ -36,7 +36,7 @@ fn get_aoc_input(day: usize) -> Result<String, &'static str> {
         header::{HeaderMap, HeaderValue, CONTENT_TYPE, COOKIE},
         redirect::Policy,
     };
-    let cookie = std::env!("AOC_TOKEN");
+    let cookie = std::fs::read_to_string("../.aoc-cookie").expect("cookie path is valid");
     let cookie_header = HeaderValue::from_str(&format!("session={}", cookie.trim()))
         .map_err(|_| "invalid session cookie")?;
     let content_header = HeaderValue::from_str("text/plain").map_err(|_| "invalid content type")?;
