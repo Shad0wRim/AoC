@@ -9,29 +9,9 @@ function day08(data::String)
     end
     sort!(dists2, by=last)
 
-    # part1
+    local part1, part2
     circuits = Set{Int}[]
-    for distentry in dists2[1:endpoint]
-        i, j = first(distentry)
-        locs = findall(c -> i in c || j in c, circuits)
-        numlocs = length(locs)
-        if numlocs == 0
-            push!(circuits, Set([i, j]))
-        elseif numlocs == 1
-            push!(circuits[first(locs)], i, j)
-        elseif numlocs == 2
-            newset = union(circuits[locs]...)
-            deleteat!(circuits, locs)
-            push!(circuits, newset)
-        else
-            error("Shouldn't have more than 2 locations for a junction")
-        end
-    end
-    part1 = prod(sort!(map(length, circuits); rev=true) |> v -> first(v, 3))
-
-    # part2
-    local part2
-    for distentry in dists2[endpoint+1:end]
+    for (idx, distentry) in enumerate(dists2)
         i, j = first(distentry)
         locs = findall(c -> i in c || j in c, circuits)
         numlocs = length(locs)
@@ -47,6 +27,12 @@ function day08(data::String)
             error("Shouldn't have more than 2 locations for a junction")
         end
 
+        # part1
+        if idx == endpoint
+            part1 = prod(sort!(map(length, circuits); rev=true) |> v -> first(v, 3))
+        end
+
+        # part2
         if isempty(setdiff(eachindex(data) |> Set, circuits...))
             x1 = first(data[i])
             x2 = first(data[j])
