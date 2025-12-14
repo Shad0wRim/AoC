@@ -63,6 +63,9 @@ function day10(data::String)
         part1 += minpushes
 
         # part2
+        # Use linear algebra to reduce the search space by finding the space of
+        # all solutions. There are multiple solutions so there will be a nullspace
+        # that will have to be searched through
         arr = Rational.(stack(wirings))
         augmented = hcat(arr, joltage_requirements)
         rref!(augmented)
@@ -72,38 +75,46 @@ function day10(data::String)
             for row in eachrow(augmented)
             if !isnothing(findfirst(isone, row))
         ]
-        freevars = setdiff(axes(arr, 2), pivotcols)
+        freevars = setdiff(axes(arr, 2), pivotcols) # get column idxs of free variables
         num_freevars = length(freevars)
 
+        # generate the nullspace from the rref
         nullspace = reduce(vcat,
             begin
                 rowidx = findfirst(==(var), pivotcols)
-                local null_entry, part_entry
+                local null_entry
                 if isnothing(rowidx)
                     freeidx = findfirst(isequal(var), freevars)
                     null_entry = zeros(Rational{Int}, length(freevars))
-                    null_entry[freeidx] = 1
+                    null_entry[freeidx] = 1 # free variables only affect their own position
                 else
                     null_entry = -augmented[rowidx, freevars]
                 end
                 permutedims(null_entry)
             end for var in axes(arr, 2)
         )
+        # generate the particular solution from the rref
         particular_solution = [(
             rowidx = findfirst(==(var), pivotcols);
-            isnothing(rowidx) ? 0 : augmented[rowidx, end]
+            isnothing(rowidx) ? 0 : augmented[rowidx, end] # free variables have 0 in the particular solution
         ) for var in axes(arr, 2)]
 
+        # iterate through all combinations of free variables, knowing that the
+        # maximum number of presses of any single button must be the max
+        # joltage of any button. This should remove any negative values
+        # that appeared in the rref particular solution.
         maxpresses_needed = maximum(joltage_requirements)
-
         part2 += begin
+            # if there are no free variables, then there is only one solution
+            # otherwise search the space. Loop is empty if num_freevars == 0
             minsol::Vector{Int} = iszero(num_freevars) ? particular_solution : [typemax(Int)]
+            # funny loop to generate all possible vectors with entries ranging
+            # from 0 to maxpresses_needed of length num_freevars
             for freevar_test in Iterators.product(repeat([0:maxpresses_needed], num_freevars)...)
                 sol = particular_solution + nullspace * [freevar_test...]
                 all(sol .>= 0) && all(isinteger, sol) || continue
                 sum(sol) < sum(minsol) && (minsol = Int.(sol))
             end
-            @show minsol
             sum(minsol)
         end
     end
