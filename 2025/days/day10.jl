@@ -28,12 +28,6 @@ function day10(data::String)
             pivotcol += 1
         end
     end
-    function toggle!(lights, bitvec, wirings)
-        for i in eachindex(bitvec)
-            bitvec[i] || continue
-            lights .⊻= wirings[i] # xor each value to toggle it
-        end
-    end
 
     for line in split(data, '\n', keepempty=false)
         # parsing
@@ -55,7 +49,10 @@ function day10(data::String)
         for i in 0:2^length(wiring_schematics)-1
             bitvec = digits(Bool, i, base=2, pad=length(wiring_schematics))
             lights = fill(false, size(indicator_lights_target))
-            toggle!(lights, bitvec, wirings)
+            for i in eachindex(bitvec) # toggle the buttons
+                bitvec[i] || continue
+                lights .⊻= wirings[i] # xor each value to toggle it
+            end
             if lights == indicator_lights_target
                 numpushes = count(bitvec)
                 if numpushes < minpushes
@@ -69,73 +66,46 @@ function day10(data::String)
         arr = Rational.(stack(wirings))
         augmented = hcat(arr, joltage_requirements)
         rref!(augmented)
-        pivotcols = [
+
+        pivotcols = [ # get the column of the pivot entry for each row
             findfirst(isone, row)
             for row in eachrow(augmented)
             if !isnothing(findfirst(isone, row))
         ]
-        freecols = setdiff(axes(arr, 2), pivotcols)
-        num_freevars = length(freecols)
-        nullspace = Matrix{Rational{Int}}[]
-        particular_solution = Rational{Int}[]
-        for var in axes(arr, 2)
-            rowidx = findfirst(isequal(var), pivotcols)
-            local null_entry, part_entry
-            if isnothing(rowidx)
-                freeidx = findfirst(isequal(var), freecols)
-                null_entry = zeros(Rational{Int}, length(freecols))
-                null_entry[freeidx] = 1
-                part_entry = 0
-            else
-                null_entry = -augmented[rowidx, freecols]
-                part_entry = augmented[rowidx, end]
-            end
-            push!(nullspace, permutedims(null_entry))
-            push!(particular_solution, part_entry)
-        end
-        nullspace = reduce(vcat, nullspace)
+        freevars = setdiff(axes(arr, 2), pivotcols)
+        num_freevars = length(freevars)
 
-        part2 += Int(if num_freevars == 0
-            sum(particular_solution) # there is only one solution
-        elseif num_freevars == 1
-            minsolution = typemax(Int)
-            for s in 0:200
-                sol = particular_solution + nullspace * [s]
+        nullspace = reduce(vcat,
+            begin
+                rowidx = findfirst(==(var), pivotcols)
+                local null_entry, part_entry
+                if isnothing(rowidx)
+                    freeidx = findfirst(isequal(var), freevars)
+                    null_entry = zeros(Rational{Int}, length(freevars))
+                    null_entry[freeidx] = 1
+                else
+                    null_entry = -augmented[rowidx, freevars]
+                end
+                permutedims(null_entry)
+            end for var in axes(arr, 2)
+        )
+        particular_solution = [(
+            rowidx = findfirst(==(var), pivotcols);
+            isnothing(rowidx) ? 0 : augmented[rowidx, end]
+        ) for var in axes(arr, 2)]
+
+        maxpresses_needed = maximum(joltage_requirements)
+
+        part2 += begin
+            minsol::Vector{Int} = iszero(num_freevars) ? particular_solution : [typemax(Int)]
+            for freevar_test in Iterators.product(repeat([0:maxpresses_needed], num_freevars)...)
+                sol = particular_solution + nullspace * [freevar_test...]
                 all(sol .>= 0) && all(isinteger, sol) || continue
-                minsolution > sum(sol) && (minsolution = sum(sol))
+                sum(sol) < sum(minsol) && (minsol = Int.(sol))
             end
-            if minsolution == typemax(Int)
-                @show machine_data particular_solution nullspace
-                error("didn't find a solution")
-            end
-            minsolution
-        elseif num_freevars == 2
-            minsolution = typemax(Int)
-            for s in 0:200, t in 0:200
-                sol = particular_solution + nullspace * [s, t]
-                all(sol .>= 0) && all(isinteger, sol) || continue
-                minsolution > sum(sol) && (minsolution = sum(sol))
-            end
-            if minsolution == typemax(Int)
-                @show machine_data particular_solution nullspace
-                error("didn't find a solution")
-            end
-            minsolution
-        elseif num_freevars == 3
-            minsolution = typemax(Int)
-            for s in 0:200, t in 0:200, u in 0:200
-                sol = particular_solution + nullspace * [s, t, u]
-                all(sol .>= 0) && all(isinteger, sol) || continue
-                minsolution > sum(sol) && (minsolution = sum(sol))
-            end
-            if minsolution == typemax(Int)
-                @show machine_data particular_solution nullspace
-                error("didn't find a solution")
-            end
-            minsolution
-        else
-            error("nullity of $num_freevars not handled yet")
-        end)
+            @show minsol
+            sum(minsol)
+        end
     end
 
     part1, part2
