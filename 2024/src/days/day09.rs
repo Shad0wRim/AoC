@@ -4,7 +4,7 @@ const TEST_DATA: &str = "2333133121414131402";
 pub fn day9(data: String) -> (Box<dyn std::fmt::Display>, Box<dyn std::fmt::Display>) {
     let data: Vec<_> = data
         .bytes()
-        .map(|b| (b.wrapping_sub(b'0')))
+        .map(|b| b.wrapping_sub(b'0'))
         .filter(|b| (0..=9).contains(b))
         .collect();
     //let data: Vec<_> = TEST_DATA.bytes().map(|b| (b.wrapping_sub(b'0'))).collect();

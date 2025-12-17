@@ -34,10 +34,10 @@ fn validate_report(report: Vec<i32>) -> bool {
     if increasing {
         report
             .windows(2)
-            .all(|x| (x[1] - x[0] >= 1 && x[1] - x[0] <= 3))
+            .all(|x| x[1] - x[0] >= 1 && x[1] - x[0] <= 3)
     } else {
         report
             .windows(2)
-            .all(|x| (x[0] - x[1] >= 1 && x[0] - x[1] <= 3))
+            .all(|x| x[0] - x[1] >= 1 && x[0] - x[1] <= 3)
     }
 }

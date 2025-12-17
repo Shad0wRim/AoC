@@ -1,19 +1,13 @@
 mod days;
 use days::DAY_FUNCS;
 
-const INTERACTIVE: bool = false;
-const DAY: usize = 21;
-
 fn main() {
     println!("Advent of Code 2024");
+    let args: Vec<String> = std::env::args().collect();
 
-    let day = if INTERACTIVE {
-        let mut buf = String::new();
-        print!("Input day to run: ");
-        std::io::stdin().read_line(&mut buf).unwrap();
-        buf.trim_end().parse().unwrap_or(DAY)
-    } else {
-        DAY
+    let Some(day) = args.get(1).and_then(|day| day.parse::<usize>().ok()) else {
+        println!("Could not parse the day argument");
+        return;
     };
 
     let data_path = format!("res/day{:02}.txt", day);
@@ -24,7 +18,7 @@ fn main() {
     }
     let data = std::fs::read_to_string(&data_path).unwrap();
 
-    let (part1, part2) = DAY_FUNCS[DAY - 1](data);
+    let (part1, part2) = DAY_FUNCS[day - 1](data);
     println!("Day {day}:");
     println!("Part 1: {part1}");
     println!("Part 2: {part2}");
