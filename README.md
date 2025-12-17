@@ -8,6 +8,30 @@ My advent of code projects
 | 2024 | Rust     |
 | 2025 | Julia    |
 
+## Future Languages
+Planning to write future and previous years in the following languages, one
+language per year
+
+### For sure
+- C
+- C++
+- Typst (lol)
+- Python 
+- Bash
+- Zig
+
+### Tentative
+- Nushell
+- Roc
+- Steel (Lisp)
+- Perl
+- Lua
+- OCaml
+- Haskell
+- Gleam
+- Go
+- Octave/MATLAB
+
 ## Running
 ### General
 All code reads from files in a `res/` directory in the corresponding year
