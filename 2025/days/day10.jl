@@ -66,10 +66,14 @@ function day10(data::String)
         # Use linear algebra to reduce the search space by finding the space of
         # all solutions. There are multiple solutions so there will be a nullspace
         # that will have to be searched through
+        #
+        # nullspace is the ways we can add or subtract to the button counts
+        # without changing the solution
         arr = Rational.(stack(wirings))
         augmented = hcat(arr, joltage_requirements)
         rref!(augmented)
 
+        # pivot entries correspond the the column where a dependent variable is
         pivotcols = [ # get the column of the pivot entry for each row
             findfirst(isone, row)
             for row in eachrow(augmented)
@@ -92,8 +96,13 @@ function day10(data::String)
                 end
                 permutedims(null_entry)
             end for var in axes(arr, 2)
-        )
+        ) # this is a matrix with the columns 
+
         # generate the particular solution from the rref
+        #
+        # the particular solution is the base level number of button presses
+        # that need to be pressed, which can be modified by the nullspace to
+        # still get the same answer
         particular_solution = [(
             rowidx = findfirst(==(var), pivotcols);
             isnothing(rowidx) ? 0 : augmented[rowidx, end] # free variables have 0 in the particular solution
@@ -111,7 +120,7 @@ function day10(data::String)
             # funny loop to generate all possible vectors with entries ranging
             # from 0 to maxpresses_needed of length num_freevars
             for freevar_test in Iterators.product(repeat([0:maxpresses_needed], num_freevars)...)
-                sol = particular_solution + nullspace * [freevar_test...]
+                sol = particular_solution + nullspace * [freevar_test...] # builtin matrix mul and add
                 all(sol .>= 0) && all(isinteger, sol) || continue
                 sum(sol) < sum(minsol) && (minsol = Int.(sol))
             end
