@@ -1,3 +1,2 @@
-int day05(const char *data, char *part1, char *part2) {
-    return 0;
+void day05(const char *data, char **part1, char **part2) {
 }

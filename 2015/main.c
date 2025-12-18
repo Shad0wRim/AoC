@@ -7,7 +7,7 @@
 
 #include "days.h"
 
-int (*days[25])(const char*, char*, char*) = {
+void (*days[25])(const char*, char**, char**) = {
     day01, day02, day03, day04, day05,
     day06, day07, day08, day09, day10,
     day11, day12, day13, day14, day15,
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
     printf("---------------<< Day %02d >>---------------\n", day);
     char *part1 = NULL, *part2 = NULL;
-    days[day-1](data, part1, part2);
+    days[day-1](data, &part1, &part2);
 
     if (!part1 && !part2) printf("Day is unimplemented\n");
     if (part1) printf("Part 1: %s\n", part1);
