@@ -25,6 +25,7 @@ int main(int argc, char **argv) {
     int day = parse_args(argc, argv, datapath);
     if (day == 0) return 1;
 
+    if (access("res/", F_OK) != 0) system("mkdir res");
     if (access(datapath, F_OK) != 0) {
         printf("fetching puzzle data\n");
         int res = download_aoc_input(day, datapath);
