@@ -16,9 +16,9 @@ int (*days[25])(char*, char*, char*) = {
 };
 char buf[1024]; // global buffer for various IO
 
-int parse_args(int, char**, char*);
+int parse_args(int argc, char **argv, char *datapath);
 char *read_data(const char *datapath);
-int download_aoc_input(int day);
+int download_aoc_input(int day, char *datapath);
 
 int main(int argc, char **argv) {
     char datapath[32];
@@ -27,7 +27,8 @@ int main(int argc, char **argv) {
 
     if (access(datapath, F_OK) != 0) {
         printf("fetching puzzle data\n");
-        download_aoc_input(day);
+        int res = download_aoc_input(day, datapath);
+        if (res != 0) printf("Failed to fetch puzzle data\n");
     }
 
     char *data = read_data(datapath);
@@ -84,11 +85,9 @@ char *read_data(const char *datapath) {
     return data;
 }
 
-int download_aoc_input(int day) {
+int download_aoc_input(int day, char* datapath) {
     char url[64];
     sprintf(url, "https://adventofcode.com/2015/day/%d/input", day);
-    char outfilename[32];
-    sprintf(outfilename, "res/day%02d.txt", day);
 
     char cookie_header[256];
     {
@@ -104,7 +103,7 @@ int download_aoc_input(int day) {
     CURL *curl = curl_easy_init();
     CURLcode res;
     if (curl) {
-        FILE *fp = fopen(outfilename, "w");
+        FILE *fp = fopen(datapath, "w");
 
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, "Content-Type: text/plain");
