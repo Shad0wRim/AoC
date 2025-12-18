@@ -90,15 +90,15 @@ int download_aoc_input(int day, char* datapath) {
     char url[64];
     sprintf(url, "https://adventofcode.com/2015/day/%d/input", day);
 
-    char cookie_header[256];
+    char aoc_cookie[256];
     {
         FILE* cookie_file = fopen("../.aoc-cookie", "r");
         if (!cookie_file) { perror("fopen"); return 1; }
-        fgets(buf, 1024, cookie_file);
+        fgets(aoc_cookie, 256, cookie_file);
         fclose(cookie_file);
-        int len = strlen(buf);
-        if (buf[len-1] == '\n') buf[len-1] = '\0';
-        sprintf(cookie_header, "cookie: session=%s", buf);
+        int len = strlen(aoc_cookie);
+        if (aoc_cookie[len-1] == '\n') aoc_cookie[len-1] = '\0';
+        sprintf(buf, "cookie: session=%s", aoc_cookie);
     }
 
     CURL *curl = curl_easy_init();
@@ -108,7 +108,7 @@ int download_aoc_input(int day, char* datapath) {
 
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, "Content-Type: text/plain");
-        headers = curl_slist_append(headers, cookie_header);
+        headers = curl_slist_append(headers, buf);
 
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, fwrite);
