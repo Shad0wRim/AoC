@@ -4,6 +4,7 @@ My advent of code projects
 ## Languages
 | Year | Language |
 | :--: | :------: |
+| 2015 | C        |
 | 2023 | Fortran  |
 | 2024 | Rust     |
 | 2025 | Julia    |
@@ -13,7 +14,6 @@ Planning to write future and previous years in the following languages, one
 language per year
 
 ### For sure
-- C
 - C++
 - Typst (lol)
 - Python 
@@ -42,6 +42,15 @@ day01.txt
 day02.txt
 ...
 ```
+
+### 2015
+The 2015 C code uses make as the build system and gcc as the compiler. 
+Run the project using
+```bash
+make
+./main 1 # enter the day number
+```
+This requires a POSIX environment and libcurl to build.
 
 ### 2023
 The 2023 Fortran code uses the Fortran package manager (fpm) and GNU Fortran
