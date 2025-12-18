@@ -1,3 +1,3 @@
-int day21(char *data, char *part1, char *part2) {
+int day21(const char *data, char *part1, char *part2) {
     return 0;
 }
