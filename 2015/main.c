@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     char *data = read_data(datapath);
     if (!data) return 2;
 
-    printf("---------------<< Day %02d >>---------------\n", day);
+    printf("---------------<< Day %d >>---------------\n", day);
     char *part1 = NULL, *part2 = NULL;
     days[day-1](data, &part1, &part2);
 
