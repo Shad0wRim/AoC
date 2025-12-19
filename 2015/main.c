@@ -42,6 +42,10 @@ int main(int argc, char **argv) {
     if (!part1 && !part2) printf("Day is unimplemented\n");
     if (part1) printf("Part 1: %s\n", part1);
     if (part2) printf("Part 2: %s\n", part2);
+
+    free(data);
+    free(part1);
+    free(part2);
     return 0;
 }
 
