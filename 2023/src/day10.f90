@@ -171,71 +171,71 @@ contains
 
         crawl: do
             do i = 1, 2
-            select case (crwlr(i)%camefrom)
-            case (1)
-                select case (crwlr(i)%val(field))
-                case ('|')
-                    error = crwlr(i)%down()
-                case ('L')
-                    error = crwlr(i)%right()
-                case ('J')
-                    error = crwlr(i)%left()
+                select case (crwlr(i)%camefrom)
+                case (1)
+                    select case (crwlr(i)%val(field))
+                    case ('|')
+                        error = crwlr(i)%down()
+                    case ('L')
+                        error = crwlr(i)%right()
+                    case ('J')
+                        error = crwlr(i)%left()
+                    case default
+                        write (*, *) "failed crawl"
+                        write (*, *) crwlr(i)%val(field)
+                    end select
+                case (2)
+                    select case (crwlr(i)%val(field))
+                    case ('-')
+                        error = crwlr(i)%right()
+                    case ('J')
+                        error = crwlr(i)%up()
+                    case ('7')
+                        error = crwlr(i)%down()
+                    case default
+                        write (*, *) "failed crawl"
+                        write (*, *) crwlr(i)%val(field)
+                    end select
+                case (3)
+                    select case (crwlr(i)%val(field))
+                    case ('-')
+                        error = crwlr(i)%left()
+                    case ('L')
+                        error = crwlr(i)%up()
+                    case ('F')
+                        error = crwlr(i)%down()
+                    case default
+                        write (*, *) "failed crawl"
+                        write (*, *) crwlr(i)%val(field)
+                    end select
+                case (4)
+                    select case (crwlr(i)%val(field))
+                    case ('|')
+                        error = crwlr(i)%up()
+                    case ('7')
+                        error = crwlr(i)%left()
+                    case ('F')
+                        error = crwlr(i)%right()
+                    case default
+                        write (*, *) "failed crawl"
+                        write (*, *) crwlr(i)%val(field)
+                    end select
                 case default
                     write (*, *) "failed crawl"
                     write (*, *) crwlr(i)%val(field)
                 end select
-            case (2)
-                select case (crwlr(i)%val(field))
-                case ('-')
-                    error = crwlr(i)%right()
-                case ('J')
-                    error = crwlr(i)%up()
-                case ('7')
-                    error = crwlr(i)%down()
-                case default
-                    write (*, *) "failed crawl"
-                    write (*, *) crwlr(i)%val(field)
-                end select
-            case (3)
-                select case (crwlr(i)%val(field))
-                case ('-')
-                    error = crwlr(i)%left()
-                case ('L')
-                    error = crwlr(i)%up()
-                case ('F')
-                    error = crwlr(i)%down()
-                case default
-                    write (*, *) "failed crawl"
-                    write (*, *) crwlr(i)%val(field)
-                end select
-            case (4)
-                select case (crwlr(i)%val(field))
-                case ('|')
-                    error = crwlr(i)%up()
-                case ('7')
-                    error = crwlr(i)%left()
-                case ('F')
-                    error = crwlr(i)%right()
-                case default
-                    write (*, *) "failed crawl"
-                    write (*, *) crwlr(i)%val(field)
-                end select
-            case default
-                write (*, *) "failed crawl"
-                write (*, *) crwlr(i)%val(field)
-            end select
 
-            if (error /= 0) then
-                write (*, *) "failed crawl"
-                write (*, *) crwlr(i)%val(field)
-            else
-                crwlr(i)%dist = crwlr(i)%dist + 1
-                if (crwlr(i)%numval(distfield) /= 0) then
-                    ! print *, "exiting crawl"
-                    exit crawl
+                if (error /= 0) then
+                    write (*, *) "failed crawl"
+                    write (*, *) crwlr(i)%val(field)
+                else
+                    crwlr(i)%dist = crwlr(i)%dist + 1
+                    if (crwlr(i)%numval(distfield) /= 0) then
+                        ! print *, "exiting crawl"
+                        exit crawl
+                    end if
+                    distfield(crwlr(i)%loc(1), crwlr(i)%loc(2)) = crwlr(i)%dist
                 end if
-                distfield(crwlr(i)%loc(1), crwlr(i)%loc(2)) = crwlr(i)%dist
-            end if
             end do
         end do crawl
     end subroutine
@@ -322,16 +322,16 @@ contains
         end if
     end function
     function up(self) result(res)
-    class(crawler), intent(inout) :: self
-    integer :: res
-    if (self%loc(2) <= 1) then
-        self%camefrom = 0
-        res = 1
-    else
-        self%camefrom = 4
-        self%loc(2) = self%loc(2) - 1
-        res = 0
-    end if
-end function
+        class(crawler), intent(inout) :: self
+        integer :: res
+        if (self%loc(2) <= 1) then
+            self%camefrom = 0
+            res = 1
+        else
+            self%camefrom = 4
+            self%loc(2) = self%loc(2) - 1
+            res = 0
+        end if
+    end function
 
 end submodule
