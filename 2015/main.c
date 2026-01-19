@@ -106,7 +106,7 @@ int download_aoc_input(int day, char* datapath) {
     }
 
     CURL *curl = curl_easy_init();
-    CURLcode res;
+    CURLcode res = CURLE_FAILED_INIT;
     if (curl) {
         FILE *fp = fopen(datapath, "w");
 

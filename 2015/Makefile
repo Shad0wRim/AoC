@@ -4,7 +4,7 @@ objects = build/day01.o build/day02.o build/day03.o build/day04.o build/day05.o\
 	  build/day16.o build/day17.o build/day18.o build/day19.o build/day20.o\
 	  build/day21.o build/day22.o build/day23.o build/day24.o build/day25.o\
 	  build/main.o
-flags = -Wall -Wextra -Wpedantic -Wno-unused-parameter
+flags = -Wall -Wextra -Wpedantic -Wno-unused-parameter -ggdb -O2
 
 build: main
 
@@ -63,7 +63,7 @@ build/day24.o: days/day24.c | build/
 build/day25.o: days/day25.c | build/
 	cc $(flags) -c days/day25.c -o build/day25.o
 build/:
-	mkdir $@
+	-mkdir $@ &>/dev/null || true
 
 .PHONY: clean
 clean: 
